@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RANDOM VIDEO CUSTOMIZER API BY JONELL MAGALLANES</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #1877f2;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    main {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    label {
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #25d366; /* WhatsApp green color */
+      color: #fff;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #128c7e; /* Darker green on hover */
+    }
+
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      animation: spin 1s linear infinite;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+
+    #statusMessage {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #3498db;
+    }
+
+    .hcaptcha-container {
+      margin-bottom: 15px;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    @keyframes spin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+  </style>
+
+  <!-- Include hCaptcha API script -->
+  <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+</head>
+<body>
+  <header>
+    <h1>VIDEO CUSTOMIZER CONTENT API BETA</h1>
+  </header>
+  <main>
+    <form action="/video" method="post" onsubmit="return validateHcaptcha()">
+      <label for="userName">Your Name:</label>
+      <input type="text" id="userName" name="username" required>
+
+      <!-- Titles input fields -->
+      <label for="title1">Title 1:</label>
+      <input type="text" id="title1" name="title1" required>
+
+      <label for="title2">Title 2:</label>
+      <input type="text" id="title2" name="title2" required>
+
+      <label for="title3">Title 3:</label>
+      <input type="text" id="title3" name="title3" required>
+
+      <label for="title4">Title 4:</label>
+      <input type="text" id="title4" name="title4" required>
+
+      <label for="title5">Title 5:</label>
+      <input type="text" id="title5" name="title5" required>
+
+      <!-- hCaptcha widget -->
+      <div class="hcaptcha-container" data-sitekey="fcda0c59-1a17-41c5-94ee-725252087946"></div>
+
+      <!-- Buttons Container -->
+      <div class="button-container">
+        <!-- Submit button -->
+        <button type="submit">
+          <span class="loader"></span>
+          Get Random Video
+        </button>
+
+        <!-- Redirect button -->
+        <button type="button" onclick="redirectWebsite()">
+          <span class="loader"></span>
+          Redirect Website
+        </button>
+      </div>
+
+      <!-- Status Message display -->
+      <div id="statusMessage"></div>
+    </form>
+  </main>
+
+  <footer>
+    <center>&copy; PROJECT CC JONEL MAGALLANES</center>
+  </footer>
+
+  <script>
+    function validateHcaptcha() {
+      var response = document.querySelector('.hcaptcha-container textarea').value;
+      if (response.length === 0) {
+        // hCaptcha not completed
+        alert('Please complete the hCaptcha challenge.');
+        return false;
+      }
+      // Proceed with form submission
+      return true;
+    }
+
+    function redirectWebsite() {
+      // Redirect to a website (replace 'https://example.com' with the actual URL)
+      window.location.href = '';
+    }
+
+    // Display loader on button click
+    document.querySelector('form .button-container button:last-child').addEventListener('click', function () {
+      document.querySelector('.loader:last-of-type').style.display = 'inline-block';
+    });
+  </script>
+</body>
+</html>

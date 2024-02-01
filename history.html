@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration History</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #1877f2;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+    }
+
+    h2 {
+      color: #1877f2;
+    }
+
+    .record {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #fff;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Registration History</h1>
+  </header>
+  <main>
+    <h2>History for User: <span id="username"></span></h2>
+    <div id="history" class="record"></div>
+  </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const username = urlParams.get('username');
+
+      if (username) {
+        document.getElementById('username').innerText = username;
+
+        fetch(`/history/${username}`)
+          .then(response => response.json())
+          .then(data => {
+            const historyDiv = document.getElementById('history');
+            const records = data.records || [];
+
+            if (records.length === 0) {
+              historyDiv.innerHTML = '<p>No registration history available.</p>';
+            } else {
+              records.forEach(record => {
+                const recordElement = document.createElement('div');
+                recordElement.classList.add('record');
+
+                const titleElement = document.createElement('h3');
+                titleElement.innerText = `Request Number: ${record.requestNumber}`;
+                recordElement.appendChild(titleElement);
+
+                const detailsList = document.createElement('ul');
+
+                const timestampListItem = document.createElement('li');
+                timestampListItem.innerText = `Timestamp: ${record.timestamp}`;
+                detailsList.appendChild(timestampListItem);
+
+                // Add the 5 titles
+                const titlesListItem = document.createElement('li');
+                titlesListItem.innerText = `Titles: ${data.titles.join(', ')}`;
+                detailsList.appendChild(titlesListItem);
+
+                // Add the API key
+                const apiKeyListItem = document.createElement('li');
+                apiKeyListItem.innerText = `API Key: ${data.apiKey}`;
+                detailsList.appendChild(apiKeyListItem);
+
+                recordElement.appendChild(detailsList);
+                historyDiv.appendChild(recordElement);
+              });
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error.message);
+            const historyDiv = document.getElementById('history');
+            historyDiv.innerHTML = '<p>An error occurred while fetching registration history.</p>';
+          });
+      }
+    });
+  </script>
+</body>
+</html>
